@@ -5,6 +5,8 @@ board = ["1","2","3",
 currentPlayer = "X"
 gameRunning = True
 winner = None
+player1 = ""
+player2 = ""
 
 #print board
 def printBoard(brd):
@@ -13,12 +15,19 @@ def printBoard(brd):
     print(brd[3] + " | " + brd[4] + " | " + brd[5])
     print("-" * 10)
     print(brd[6] + " | " + brd[7] + " | " + brd[8])
-
+    
+#input player name   
+def inpPlayerName():
+    global player1
+    global player2
+    player1 = input("Please enter name for player 1 (X):")
+    player2 = input("Please enter name for player 2 (O):")
+    
 #player input
 def playerInp(brd):
     inpVal = True
     while inpVal:
-        inp = input("Enter the location to place marker in ")
+        inp = input(f"Enter the location to place your {currentPlayer}:")
         if(inp.isdigit()):
             inpInt = int(inp)
             if (inpInt >= 1 and inpInt<=9):
@@ -83,10 +92,16 @@ def checkTie(brd):
         printBoard(brd)
         gameRunning = False
 
+def outWinName(winner):
+    if winner == "X":
+        return player1
+    elif winner == "O":
+        return player2
+
 def checkForWin(brd):
     global gameRunning
     if checkDiagonal(brd) or checkHorizontal(brd) or checkVertical(brd):
-        print(f"The winner is {winner}!")
+        print(f"The winner is {outWinName(winner)}!")
         printBoard(brd)
         gameRunning = False
         
@@ -100,6 +115,7 @@ def switchPlayer():
         
 
 def gamePlay():
+    inpPlayerName()
     while gameRunning == True:
         printBoard(board)
         playerInp(board)
