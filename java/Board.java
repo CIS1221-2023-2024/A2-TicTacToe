@@ -38,6 +38,37 @@ public class Board {
         return cells[row][column].getSymbol();
     }
 
+    public boolean checkForWin(char symbol){
+        //Check rows, column,. and diagonals for a winning combination
+        return checkRows(symbol) || checkColumns(symbol) || checkDiagonals(symbol);
+    }
+    private boolean checkRows(char symbol){
+        for(int i = 0; i < 3; i ++){
+            if(cells[i][0].getSymbol() == symbol && cells[i][1].getSymbol() == symbol && cells[i][2].getSymbol() == symbol){
+            return true; // Found a winning row
+        }
+    }
+    return false;
+}
+
+private boolean checkColumns(char symbol){
+    for(int j = 0; j < 3; j++){
+        if(cells[0][j].getSymbol() == symbol && cells[1][j].getSymbol() == symbol && cells[2][j].getSymbol() == symbol){
+            return true; // Found a winning column
+        }
+    }
+    return false;
+}
+private boolean checkDiagonals(char symbol){
+    //Check the two diagonals
+    if((cells[0][0].getSymbol() == symbol && cells[1][1].getSymbol() == symbol && cells[2][2].getSymbol() == symbol)||
+    (cells[0][2].getSymbol() == symbol && cells[1][1].getSymbol() == symbol && cells[2][0].getSymbol() == symbol)){
+        return true; // Found a winning diagonal
+    }
+    return false;
+
+}
+
     public boolean isBoardFull(){
         for(int i = 0; i < 3; i ++){
             for(int j = 0; j < 3; j++){
