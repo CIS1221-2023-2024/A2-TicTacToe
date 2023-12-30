@@ -66,8 +66,8 @@ def placeToken(brd,inp,inpInt):
         if brd[inpInt - 1] == inp:
             brd[(inpInt - 1)] = currentPlayer
             val = False
-        else:
-            if gamemode == 1 or currentPlayer == "0":
+        elif gamemode == 1 or currentPlayer == "0": 
+            #this condition is added in order to not have the message printed everytime the ai generates a random number already taken
                 print("Location already taken!")
     else:
         print("Integer entered is not a location on the board!")
