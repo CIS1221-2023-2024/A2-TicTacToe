@@ -11,6 +11,9 @@ gamemode = 0
 
 
 #print board
+def printBoard():
+    printBoard(board)
+
 def printBoard(brd):
     print(brd[0] + " | " + brd[1] + " | " + brd[2])
     print("-" * 10)
@@ -18,7 +21,7 @@ def printBoard(brd):
     print("-" * 10)
     print(brd[6] + " | " + brd[7] + " | " + brd[8])
     print()
-    
+
 #menu to choose game mode
 def menu():
     global gamemode
@@ -47,8 +50,8 @@ def menu():
                 print("Invalid input! Must be an integer between 1-2")
         else:
             print("Invalid input! Must be an integer.")
-                
-#input player name   
+
+#input player name
 def inpPlayerName(gm):
     global player1
     global player2
@@ -59,20 +62,20 @@ def inpPlayerName(gm):
         player1 = "AI"
         print("Player 1 (X) is AI")
         player2 = input("Please enter name for player 2 (O):")
-    
+
 def placeToken(brd,inp,inpInt):
     val = True
     if (inpInt >= 1 and inpInt<=9):
         if brd[inpInt - 1] == inp:
             brd[(inpInt - 1)] = currentPlayer
             val = False
-        elif gamemode == 1 or currentPlayer == "0": 
+        elif gamemode == 1 or currentPlayer == "0":
             #this condition is added in order to not have the message printed everytime the ai generates a random number already taken
                 print("Location already taken!")
     else:
         print("Integer entered is not a location on the board!")
     return val
-    
+
 #player input
 def playerInp(brd):
     inpVal = True
@@ -84,14 +87,14 @@ def playerInp(brd):
                 inpVal = placeToken(brd, inp, inpInt)
             else:
                 print("Opps the input entered in not an integer!")
-        
+
         elif gamemode == 2.1 and currentPlayer == "X":
             import random
             inp = random.randint(1,9)
             inpStr = str(inp)
             inpVal = placeToken(brd, inpStr,inp)
-                  
-#check for win or tie        
+
+#check for win or tie
 def checkHorizontal(brd):
     global winner
     if brd[0] == brd[1] == brd[2] and (brd[0] == "X" or brd[0] == "O"):
@@ -105,12 +108,12 @@ def checkHorizontal(brd):
         return True
     else:
         return False
-            
+
 def checkVertical(brd):
     global winner
     if brd[0] == brd[3] == brd[6]and (brd[0] == "X" or brd[0] == "O"):
         winner = brd[0]
-        return True  
+        return True
     elif brd[1] == brd[4] == brd[7]and (brd[1] == "X" or brd[1] == "O"):
        winner = brd[1]
        return True
@@ -119,7 +122,7 @@ def checkVertical(brd):
         return True
     else:
         return False
-    
+
 def checkDiagonal(brd):
     global winner
     if brd[0] == brd[4] == brd[8] and (brd[0] == "X" or brd[0] == "O"):
@@ -130,7 +133,7 @@ def checkDiagonal(brd):
         return True
     else:
         return False
-    
+
 def checkTie(brd):
     global gameRunning
     cnt = 0
@@ -154,7 +157,7 @@ def checkForWin(brd):
         print(f"\nThe winner is {outWinName(winner)}!")
         printBoard(brd)
         gameRunning = False
-        
+
 #switch player
 def switchPlayer():
     global currentPlayer
@@ -162,18 +165,16 @@ def switchPlayer():
         currentPlayer = "O"
     else:
         currentPlayer = "X"
-        
 
 def gamePlay():
     menu()
     inpPlayerName(gamemode)
-    
+
     while gameRunning == True:
         printBoard(board)
         playerInp(board)
         checkForWin(board)
         checkTie(board)
         switchPlayer()
-        
-        
+
 gamePlay()
