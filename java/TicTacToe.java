@@ -4,20 +4,48 @@ public class TicTacToe {
     private Player player1, player2, currentPlayer;
     private AIPlayer aiPlayer; 
     private PlayingMode playingMode;
-    private Scanner s = new Scanner(System.in);
+    private Scanner s = new Scanner(System.in); //For integer inputs
+    private Scanner sc = new Scanner(System.in); //For String inputs
 
     public enum PlayingMode{
         USER_VS_USER,
         USER_VS_AI
     }
 
-    public TicTacToe(String player1Name, String player2Name){
+    public TicTacToe(){
         board = new Board();
-        player1 = new Player(player1Name, 'X');
-        player2 = new Player(player2Name, 'O');
-        aiPlayer = new AIPlayer('O');
+        chooseGameMode();
+        setupPlayers();
+    }
+
+    private void chooseGameMode(){
+        System.out.println("Choose game mode: \n1. User vs User \n2. User vs AI");
+        int choice = s.nextInt();
+        if(choice == 1){
+            playingMode = PlayingMode.USER_VS_USER;
+        } else{
+            playingMode = PlayingMode.USER_VS_AI;
+        }
+    }
+
+    private void setupPlayers(){
+        if(playingMode == PlayingMode.USER_VS_USER){
+            System.out.print("Enter name for Player 1: ");
+            String player1Name = sc.nextLine();
+            player1 = new Player(player1Name, 'X');
+
+            System.out.print("Enter name for Player 2: ");
+            String player2Name = sc.nextLine();
+            player2 = new Player(player2Name, 'O');
+        }
+
+        else if (playingMode == PlayingMode.USER_VS_AI){
+            System.out.print("Enter your name: ");
+            String playerName = sc.nextLine();
+            player1 = new Player(playerName, 'X');
+            aiPlayer = new AIPlayer('O');
+        }
         currentPlayer = player1;
-        this.playingMode = playingMode;
     }
 
     public void playGame(){
@@ -40,11 +68,11 @@ public class TicTacToe {
                 }
             }
 
-            if(checkForWin()){
+            if(board.checkForWin(currentPlayer.getSymbol())){
                 board.display();
-                System.out.println(currentPlayer.getName() + "wins!");
+                System.out.println(currentPlayer.getName() + " wins!");
                 return;
-            } else if (isBoardFull()){
+            } else if (board.isBoardFull()){
                 board.display();
                 System.out.println("It's a draw!");
                 return;
@@ -119,7 +147,7 @@ public class TicTacToe {
         }
 
         public static void main(String args[]){
-            TicTacToe game = new TicTacToe("Player1", "Player2");
+            TicTacToe game = new TicTacToe();
             game.playGame();
         }
     }
