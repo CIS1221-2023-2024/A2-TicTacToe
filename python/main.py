@@ -1,26 +1,18 @@
-board = ["1","2","3",
-         "4","5","6",
-         "7","8","9"]
+import minimax
+import utils
+
+board = utils.getBoard()
+winner = utils.getWinner()
+
 
 currentPlayer = "X"
 gameRunning = True
-winner = None
+
 player1 = ""
 player2 = ""
 gamemode = 0
 
 
-#print board
-def printBoard():
-    printBoard(board)
-
-def printBoard(brd):
-    print(brd[0] + " | " + brd[1] + " | " + brd[2])
-    print("-" * 10)
-    print(brd[3] + " | " + brd[4] + " | " + brd[5])
-    print("-" * 10)
-    print(brd[6] + " | " + brd[7] + " | " + brd[8])
-    print()
 
 #menu to choose game mode
 def menu():
@@ -93,70 +85,39 @@ def playerInp(brd):
             inp = random.randint(1,9)
             inpStr = str(inp)
             inpVal = placeToken(brd, inpStr,inp)
+            if inpVal == False:
+                print("AI's move:" )
+        elif gamemode == 2.2 and currentPlayer == "X":
 
-#check for win or tie
-def checkHorizontal(brd):
-    global winner
-    if brd[0] == brd[1] == brd[2] and (brd[0] == "X" or brd[0] == "O"):
-        winner = brd[0]
-        return True
-    elif brd[3] == brd[4] == brd[5]and (brd[3] == "X" or brd[3] == "O"):
-       winner = brd[3]
-       return True
-    elif brd[6] == brd[7] == brd[8] and (brd[6] == "X" or brd[6] == "O"):
-        winner = brd[6]
-        return True
-    else:
-        return False
+            inp = minimax.bestMove(brd)
+            inpStr = str(inp)
+            inpVal = placeToken(brd,inpStr,inp)
+            if inpVal == False:
+                print("AI's move:" )
 
-def checkVertical(brd):
-    global winner
-    if brd[0] == brd[3] == brd[6]and (brd[0] == "X" or brd[0] == "O"):
-        winner = brd[0]
-        return True
-    elif brd[1] == brd[4] == brd[7]and (brd[1] == "X" or brd[1] == "O"):
-       winner = brd[1]
-       return True
-    elif brd[2] == brd[5] == brd[8]and (brd[2] == "X" or brd[2] == "O"):
-        winner = brd[2]
-        return True
-    else:
-        return False
-
-def checkDiagonal(brd):
-    global winner
-    if brd[0] == brd[4] == brd[8] and (brd[0] == "X" or brd[0] == "O"):
-        winner = brd[0]
-        return True
-    elif brd[2] == brd[4] == brd[6]and (brd[2] == "X" or brd[2] == "O"):
-        winner = brd[2]
-        return True
-    else:
-        return False
-
-def checkTie(brd):
-    global gameRunning
-    cnt = 0
-    for i in range(9):
-        if brd[i] != str(i+1):
-            cnt += 1
-    if cnt == 9:
-        print("It's a tie!")
-        printBoard(brd)
-        gameRunning = False
-
-def outWinName(winner):
+def setWinnerName(winner):
     if winner == "X":
         return player1
     elif winner == "O":
         return player2
 
-def checkForWin(brd):
+def outWinner(brd):
     global gameRunning
-    if checkDiagonal(brd) or checkHorizontal(brd) or checkVertical(brd):
-        print(f"\nThe winner is {outWinName(winner)}!")
-        printBoard(brd)
+    if utils.checkForWin(brd):
         gameRunning = False
+        winner = utils.getWinner()
+        if winner == "X":
+            print(f"\nThe Winner is {setWinnerName(winner)}")
+            utils.printBoard()
+        elif winner == "O":
+            print(f"\nThe Winner is {setWinnerName(winner)}")
+            utils.printBoard()
+    elif utils.checkTie(brd):
+        gameRunning = False
+        print("It's a tie!")
+        utils.printBoard()
+
+
 
 #switch player
 def switchPlayer():
@@ -169,12 +130,14 @@ def switchPlayer():
 def gamePlay():
     menu()
     inpPlayerName(gamemode)
+    print()
+    utils.printBoard()
 
     while gameRunning == True:
-        printBoard(board)
+        board = utils.getBoard()
         playerInp(board)
-        checkForWin(board)
-        checkTie(board)
+        utils.printBoard()
+        outWinner(board)
         switchPlayer()
 
 gamePlay()
