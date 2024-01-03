@@ -88,8 +88,7 @@ def playerInp(brd):
             if inpVal == False:
                 print("AI's move:" )
         elif gamemode == 2.2 and currentPlayer == "X":
-
-            inp = minimax.bestMove(brd)
+            inp = minimax.bestMove(brd)+1
             inpStr = str(inp)
             inpVal = placeToken(brd,inpStr,inp)
             if inpVal == False:

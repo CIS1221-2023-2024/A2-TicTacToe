@@ -4,8 +4,8 @@ board = utils.getBoard()
 
 
 def evaluate(depth):
-    winner = utils.getWinner()
     if utils.checkForWin(board):
+        winner = utils.getWinner()
         if winner == "X":
             #score = 10 - depth
             return True,(10-depth)
@@ -16,7 +16,7 @@ def evaluate(depth):
         #score = 0
         return True,0
     else:
-        return False,-11
+        return False, None
 
 def minimax(brd,depth,alpha,beta,maximizingPlayer):
     gameStatus,score = evaluate(depth)
