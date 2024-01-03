@@ -2,7 +2,7 @@ import java.util.Scanner;
 public class TicTacToe {
     private Board board;
     private Player player1, player2, currentPlayer;
-    private AIPlayer aiPlayer; 
+    private Player aiPlayer; 
     private PlayingMode playingMode;
     private Scanner s = new Scanner(System.in); //For integer inputs
     private Scanner sc = new Scanner(System.in); //For String inputs
@@ -37,6 +37,7 @@ public class TicTacToe {
             System.out.print("Enter name for Player 2: ");
             String player2Name = sc.nextLine();
             player2 = new Player(player2Name, 'O');
+            currentPlayer = player1;
         }
 
         else if (playingMode == PlayingMode.USER_VS_AI){
@@ -44,8 +45,9 @@ public class TicTacToe {
             String playerName = sc.nextLine();
             player1 = new Player(playerName, 'X');
             aiPlayer = new AIPlayer('O');
+            currentPlayer = player1;
         }
-        currentPlayer = player1;
+        
     }
 
     public void playGame(){
@@ -57,16 +59,19 @@ public class TicTacToe {
             if(playingMode == PlayingMode.USER_VS_USER){
                 handleUserMove(s);
             }else{
-                if(currentPlayer == player1){
-                    handleUserMove(s);
-                }else{
+                if(currentPlayer instanceof AIPlayer){
                     //AI's turn
-                    Move aiMove = aiPlayer.getBestMove(board);
+                    AIPlayer ai = (AIPlayer) currentPlayer;
+                    Move aiMove = ai.getBestMove(board);
                     row = aiMove.getRow();
                     column = aiMove.getColumn();
                     makeMove(row, column);
                 }
+                else{
+                    //User's turn
+                    handleUserMove(s);
             }
+        }
 
             if(board.checkForWin(currentPlayer.getSymbol())){
                 board.display();
@@ -105,9 +110,14 @@ public class TicTacToe {
             return row>= 0 && row < 3 && column >= 0 && column < 3 && board.isCellEmpty(row,column);
         }
         private void switchPlayer(){
+            if (playingMode == PlayingMode.USER_VS_USER){
             // if player 1, then switch to player 2
             // if false, then switch to player 1
             currentPlayer = (currentPlayer == player1)? player2 : player1;
+            }
+            else if (playingMode == PlayingMode.USER_VS_AI){
+                currentPlayer = (currentPlayer == player1) ? aiPlayer : player1;
+            }
         }
 
         private boolean isBoardFull(){

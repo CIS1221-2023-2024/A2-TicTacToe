@@ -1,7 +1,8 @@
-public class AIPlayer{
+public class AIPlayer extends Player{
     private char symbol;
 
     public AIPlayer(char symbol){
+        super("AI", symbol); 
         this.symbol = symbol;
     }
     public char getSymbol(){
