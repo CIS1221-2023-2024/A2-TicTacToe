@@ -19,10 +19,9 @@ def evaluate(depth):
         return False, None
 
 def minimax(brd,depth,alpha,beta,maximizingPlayer):
-    gameStatus,score = evaluate(depth)
+    gameEnded,score = evaluate(depth)
 
-    if gameStatus or depth == 0:
-        print(score)
+    if gameEnded or depth == 0:
         return score
 
     else:
