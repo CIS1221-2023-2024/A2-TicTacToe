@@ -1,9 +1,27 @@
+import java.util.Random;
+import java.util.List;
+import java.util.ArrayList;
 public class AIPlayer extends Player{
     private char symbol;
 
-    public AIPlayer(char symbol){
+    public enum Strategy{
+        RANDOM, MINIMAX
+    }
+    private Strategy strategy;
+
+    public AIPlayer(char symbol, Strategy strategy){
         super("AI", symbol); 
         this.symbol = symbol;
+        this.strategy = strategy;
+    }
+
+    public void makeMove(Board board, int depth, boolean isMaximising, int alpha, int beta){
+        if(this.strategy == strategy.RANDOM){
+            randomMove(board);
+        }
+        else{
+            minimax(board, depth, isMaximising, alpha, beta);
+        }
     }
     public char getSymbol(){
         return symbol;
@@ -21,7 +39,7 @@ public class AIPlayer extends Player{
                     //Make the move
                     board.setCellSymbol(i,j,symbol);
 
-                    //Eveluate the score for the current move
+                    //Evaluate the score for the current move
                     int score = minimax(board,0,false, Integer.MIN_VALUE, Integer.MAX_VALUE); // Assume it's the opponent's turn
 
                     //Undo the move
@@ -37,6 +55,26 @@ public class AIPlayer extends Player{
             }
         }
         return bestMove;
+    }
+    private void randomMove(Board board){
+        List<Move> availableMoves = new ArrayList<>();
+        // find all available (empty) cells
+        // Rows
+        for(int i = 0; i < 3; i++){
+            // Columns
+            for(int j = 0; j < 3; j ++){
+                if(board.isCellEmpty(i,j)){
+                    availableMoves.add(new Move(i,j));  
+                }
+            }
+        }
+        // choose a random empty cell to place AI token in
+        if(!availableMoves.isEmpty()){
+            Random random = new Random();
+            Move move = availableMoves.get(random.nextInt(availableMoves.size()));
+            board.setCellSymbol(move.getRow(), move.getColumn(), this.symbol);
+        }
+
     }
 
     private int minimax(Board board, int depth, boolean isMaximising, int alpha, int beta){
