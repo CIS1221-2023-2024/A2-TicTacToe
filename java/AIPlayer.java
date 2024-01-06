@@ -5,7 +5,8 @@ public class AIPlayer extends Player{
     private char symbol;
 
     public enum Strategy{
-        RANDOM, MINIMAX
+        RANDOM, // AI places its token in a random empty cell
+        MINIMAX // AI uses the Minimax algorithm 
     }
     private Strategy strategy;
 
@@ -15,16 +16,21 @@ public class AIPlayer extends Player{
         this.strategy = strategy;
     }
 
-    public void makeMove(Board board, int depth, boolean isMaximising, int alpha, int beta){
+    public void makeMove(Board board){
         if(this.strategy == strategy.RANDOM){
             randomMove(board);
         }
-        else{
-            minimax(board, depth, isMaximising, alpha, beta);
+        else if (this.strategy == Strategy.MINIMAX){
+            Move bestMove = getBestMove(board);
+            board.setCellSymbol(bestMove.getRow(), bestMove.getColumn(), this.symbol);
         }
     }
     public char getSymbol(){
         return symbol;
+    }
+
+    public Strategy getStrategy(){
+        return this.strategy;
     }
 
     public Move getBestMove(Board board){
@@ -56,7 +62,7 @@ public class AIPlayer extends Player{
         }
         return bestMove;
     }
-    private void randomMove(Board board){
+    public void randomMove(Board board){
         List<Move> availableMoves = new ArrayList<>();
         // find all available (empty) cells
         // Rows

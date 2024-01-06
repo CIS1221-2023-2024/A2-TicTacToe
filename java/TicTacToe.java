@@ -16,7 +16,8 @@ public class TicTacToe {
     }
 
     public enum gameDifficulty{
-        EASY, HARD
+        EASY, // AI chooses a random free cell to enter its token
+        HARD // AI uses the Minimax algorithm
     }
 
     // TicTacToe class constructor
@@ -47,21 +48,20 @@ public class TicTacToe {
             }
         }while((choice != 1) && (choice != 2));
     }
-
+    // this method asks the user which difficulty is preferred (in the case of user vs AI)
     private gameDifficulty chooseGameDifficulty(){
-        System.out.println("Choose game difficulty: \n1. Easy \n2. Hard");
+        System.out.println("\nChoose game difficulty: \n1. Easy \n2. Hard");
         int choice = s.nextInt();
-        do{
         switch(choice){
             case 1:
+            // sets game difficulty to Easy (random AI logic)
             return gameDifficulty.EASY;
             case 2:
+            // sets game difficulty to Hard (Minimax algorithm)
             return gameDifficulty.HARD;
             default: System.out.println("Input entered is invalid. Selecting Easy Mode as default");
             return gameDifficulty.EASY;
         }
-        }while((choice != 1) && (choice != 2));
-
     }
 
     private void setupPlayers(){
@@ -81,7 +81,7 @@ public class TicTacToe {
 
         else if (playingMode == PlayingMode.USER_VS_AI){
             // player name is entered
-            System.out.print("Enter your name: ");
+            System.out.print("\nEnter your name: ");
             String playerName = sc.nextLine();
             // new player is created
             player1 = new Player(playerName, 'X');
@@ -90,12 +90,15 @@ public class TicTacToe {
 
             gameDifficulty level = chooseGameDifficulty();
             if(level == gameDifficulty.EASY){
+                // if the difficulty level chosen is Easy, then the Random Strategy is used
                 aiPlayer = new AIPlayer('O', AIPlayer.Strategy.RANDOM);
-            }else{
+            
+            }else if (level == gameDifficulty.HARD){
+                //if the difficulty level chosen is Hard, then the Minimax algorithm is used
                 aiPlayer = new AIPlayer('O', AIPlayer.Strategy.MINIMAX);
                 }
         }
-        // player 1 starts the game
+        // player 1 starts the game (the user in the case of AI vs User)
         currentPlayer = player1;
     }
 
@@ -108,27 +111,39 @@ public class TicTacToe {
 
             if(playingMode == PlayingMode.USER_VS_USER){
                 handleUserMove(s);
+            
+            // if user vs AI
             }else{
                 if(currentPlayer instanceof AIPlayer){
                     //AI's turn
                     AIPlayer ai = (AIPlayer) currentPlayer;
-                    Move aiMove = ai.getBestMove(board);
+                    if(ai.getStrategy() == AIPlayer.Strategy.RANDOM){
+                        // the random move strategy is called
+                        ai.randomMove(board);
+                    }else{
+                        // AI calculates what the best next move is 
+                        Move aiMove = ai.getBestMove(board);
                     row = aiMove.getRow();
                     column = aiMove.getColumn();
+                    // the best move is made
                     makeMove(row, column);
+                    } 
                 }
                 else{
                     //User's turn
                     handleUserMove(s);
             }
         }
-
+            // if the game is won
             if(board.checkForWin(currentPlayer.getSymbol())){
                 board.display();
+                // winning player is shown
                 System.out.println(currentPlayer.getName() + " wins!");
                 return;
+            // if board is full and no one won
             } else if (board.isBoardFull()){
                 board.display();
+                // message is shown
                 System.out.println("It's a draw!");
                 return;
             }
@@ -169,51 +184,8 @@ public class TicTacToe {
                 currentPlayer = (currentPlayer == player1) ? aiPlayer : player1;
             }
         }
-
-        private boolean isBoardFull(){
-            return board.isBoardFull();
-        }
-        
-        private boolean checkForWin(){
-            //check rows
-            for(int i = 0; i < 3; i++){
-                if(board.getSymbol(i,0)== currentPlayer.getSymbol() &&
-                    board.getSymbol(i,1) == currentPlayer.getSymbol() &&
-                    board.getSymbol(i,2) == currentPlayer.getSymbol()){
-                        return true;
-                    }
-            }
-            //check columns
-            for(int j = 0; j < 3; j++){
-                if(board.getSymbol(0,j) == currentPlayer.getSymbol() &&
-                    board.getSymbol(1,j) == currentPlayer.getSymbol() &&
-                    board.getSymbol(2,j) == currentPlayer.getSymbol()){
-                        return true;
-                    }
-            //check diagonal (from left to right)
-            if(board.getSymbol(0,0) == currentPlayer.getSymbol() &&
-                board.getSymbol(1,1) == currentPlayer.getSymbol() &&
-                board.getSymbol(2,2) == currentPlayer.getSymbol()){
-                    return true;
-                }
-            //check diagonal (from right to left)
-            if(board.getSymbol(0,2) == currentPlayer.getSymbol() &&
-                board.getSymbol(1,1) == currentPlayer.getSymbol() &&
-                board.getSymbol(2,0) == currentPlayer.getSymbol()){
-                    return true;
-                }
-            }
-            return false;
-        }
-
         public static void main(String args[]){
             TicTacToe game = new TicTacToe();
             game.playGame();
         }
     }
-
-    
-            
-
-     
-
