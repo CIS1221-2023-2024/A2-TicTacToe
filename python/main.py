@@ -1,3 +1,5 @@
+#to run either press the run button or in command prompt go to file with scripts (cd python)and enter the command python main.py
+
 import minimax
 import utils
 
@@ -18,15 +20,15 @@ gamemode = 0
 def menu():
     global gamemode
     print("Welcome to Tic Tac Toe!")
-    while True:
+    while True: #loop so menu keeps outputing until valid input
         userinp = input("Please select game mode: \n1. User vs User \n2. User vs AI \n")
-        if userinp.isdigit():
+        if userinp.isdigit(): #checking of input is integer
             userinp = int(userinp)
             if userinp == 1:
                 gamemode = 1
                 break
             elif userinp == 2:
-                while True:
+                while True: #another loop to check for valid input of different gamemodes when playing against ai
                     plymode = input("Please select game difficulty: \n1.easy \n2.Hard \n")
                     if plymode.isdigit():
                         plymode = int(plymode)
@@ -50,11 +52,12 @@ def inpPlayerName(gm):
     if gm == 1:
         player1 = input("Please enter name for player 1 (X):")
         player2 = input("Please enter name for player 2 (O):")
-    elif int(gm) == 2:
+    elif int(gm) == 2: #if the game is user vs ai irrespective of easy or hard
         player1 = "AI"
         print("Player 1 (X) is AI")
         player2 = input("Please enter name for player 2 (O):")
 
+#function for token to be placed on board
 def placeToken(brd,inp,inpInt):
     val = True
     if (inpInt >= 1 and inpInt<=9):
@@ -72,7 +75,7 @@ def placeToken(brd,inp,inpInt):
 def playerInp(brd):
     inpVal = True
     while inpVal:
-        if gamemode == 1 or (int(gamemode) == 2 and  currentPlayer == "O"):
+        if gamemode == 1 or (int(gamemode) == 2 and  currentPlayer == "O"): #if it is the user's turn
             inp = input(f"Enter the location to place your {currentPlayer}:")
             if(inp.isdigit()):
                 inpInt = int(inp)
@@ -80,26 +83,28 @@ def playerInp(brd):
             else:
                 print("Opps the input entered in not an integer!")
 
-        elif gamemode == 2.1 and currentPlayer == "X":
+        elif gamemode == 2.1 and currentPlayer == "X": # if it is the ai's turn in easy ai mode
             import random
             inp = random.randint(1,9)
             inpStr = str(inp)
             inpVal = placeToken(brd, inpStr,inp)
             if inpVal == False:
                 print("AI's move:" )
-        elif gamemode == 2.2 and currentPlayer == "X":
+        elif gamemode == 2.2 and currentPlayer == "X": # if it is the ai's turn in hard ai mode
             inp = minimax.bestMove(brd)+1
             inpStr = str(inp)
             inpVal = placeToken(brd,inpStr,inp)
             if inpVal == False:
                 print("AI's move:" )
 
+#function to return winner name
 def setWinnerName(winner):
     if winner == "X":
         return player1
     elif winner == "O":
         return player2
 
+#fuunction to check for win or tie and output result
 def outWinner(brd):
     global gameRunning
     if utils.checkForWin(brd):
@@ -126,6 +131,7 @@ def switchPlayer():
     else:
         currentPlayer = "X"
 
+#the function to run all the other functions
 def gamePlay():
     menu()
     inpPlayerName(gamemode)

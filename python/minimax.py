@@ -3,29 +3,26 @@ import utils
 board = utils.getBoard()
 
 
-def evaluate(depth):
+def evaluate(depth): #this function is used to evaluate the move done by minimax
     if utils.checkForWin(board):
         winner = utils.getWinner()
-        if winner == "X":
-            #score = 10 - depth
+        if winner == "X": # if ai wins
             return True,(10-depth)
-        elif winner == "O":
-            #score = depth-10
+        elif winner == "O": # if user wins
             return True,(depth-10)
     if utils.checkTie(board) == True:
-        #score = 0
         return True,0
     else:
-        return False, None
+        return False, None # if game has not ended, so no score can be given
 
 def minimax(brd,depth,alpha,beta,maximizingPlayer):
-    gameEnded,score = evaluate(depth)
+    gameEnded,score = evaluate(depth) #checking if game has ended and getting the score
 
-    if gameEnded or depth == 0:
+    if gameEnded or depth == 0: # stopping condition for recursion
         return score
 
     else:
-        if maximizingPlayer:
+        if maximizingPlayer: # if its the ai's turn to play when checking all possibilities
             maxEval = float('-inf')
             empSpcs = utils.empSpaces()
             if len(empSpcs) > 0:
@@ -38,7 +35,7 @@ def minimax(brd,depth,alpha,beta,maximizingPlayer):
                     if beta <= alpha:
                         break
                 return maxEval
-        else:
+        else: # if it's the user's turn when checking all possibilities
             minEval = float('inf')
             empSpcs = utils.empSpaces()
             if len(empSpcs) >0:
@@ -52,11 +49,11 @@ def minimax(brd,depth,alpha,beta,maximizingPlayer):
                         break
                 return minEval
 
-def bestMove(brd):
+def bestMove(brd): # determing the best path to be taken by ai
     bestScore = float('-inf')
     bestLoc = 0
 
-    empScp = utils.empSpaces()
+    empScp = utils.empSpaces() # getting a list of all the empty spaces on the board
     alpha = float('-inf')
     beta = float('inf')
     if len(empScp) > 0:
@@ -71,4 +68,4 @@ def bestMove(brd):
             if moveVal > bestScore:
                 bestScore = moveVal
                 bestLoc = i
-        return bestLoc
+        return bestLoc # returning location which will be used for player input

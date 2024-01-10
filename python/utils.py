@@ -1,15 +1,17 @@
+#global variables for board and winner
 board = ["1","2","3",
          "4","5","6",
          "7","8","9"]
 winner = None
 
+#get functions for board and winner so they can be accessed form other scripts
 def getBoard():
     return board
 
 def getWinner():
     return winner
 
-
+#function to check the number of empty spaces in the board and storing their index in a list
 def empSpaces():
     lst = []
     for i in range(9):
