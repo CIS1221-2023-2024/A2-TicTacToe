@@ -1,12 +1,12 @@
 import java.util.Scanner;
+import java.util.InputMismatchException;
 public class TicTacToe {
     //creating instances of the board, players 1 and 2, AI player, and the playing mode
     private Board board;
     private Player player1, player2, currentPlayer;
     private Player aiPlayer; 
     private PlayingMode playingMode;
-    private Scanner s = new Scanner(System.in); //For integer inputs
-    private Scanner sc = new Scanner(System.in); //For String inputs
+    private Scanner s = new Scanner(System.in); 
 
     public enum PlayingMode{
         // game mode where two players play against each other
@@ -29,8 +29,22 @@ public class TicTacToe {
     
     // this method asks the user which game mode is preferred
     private void chooseGameMode(){
-        System.out.println("Choose game mode: \n1. User vs User \n2. User vs AI");
-        int choice = s.nextInt();
+        int choice;
+        while(true){
+            try{
+            System.out.println("Choose game mode: \n1. User vs User \n2. User vs AI");
+            choice = s.nextInt();
+            if((choice == 1) || (choice == 2)){
+                break;
+            }
+            else{
+                System.out.println("Invalid input. Enter 1 or 2");
+            }
+            }catch (InputMismatchException e){
+                System.out.println("Invalid input. Enter an integer");
+                s.next();
+            }
+        };
         do{
             switch(choice){
                 case 1:
@@ -50,8 +64,24 @@ public class TicTacToe {
     }
     // this method asks the user which difficulty is preferred (in the case of user vs AI)
     private gameDifficulty chooseGameDifficulty(){
-        System.out.println("\nChoose game difficulty: \n1. Easy \n2. Hard");
-        int choice = s.nextInt();
+        int choice;
+        while(true){
+            try{
+                System.out.println("\nChoose game difficulty: \n1. Easy \n2. Hard");
+                choice = s.nextInt();
+                if((choice == 1)||(choice == 2)){
+                    break;
+                }
+                else{
+                    System.out.println("Invalid input. Enter 1 or 2");
+                }
+            }catch(InputMismatchException e){
+            System.out.println("Invalid input. Enter an integer");
+            s.next();
+            }
+
+        }
+    
         switch(choice){
             case 1:
             // sets game difficulty to Easy (random AI logic)
@@ -68,13 +98,13 @@ public class TicTacToe {
         if(playingMode == PlayingMode.USER_VS_USER){
             // name for player 1 is entered
             System.out.print("Enter name for Player 1: ");
-            String player1Name = sc.nextLine();
+            String player1Name = s.nextLine();
             // a new player is created
             player1 = new Player(player1Name, 'X');
 
             // name for player 2 is entered
             System.out.print("Enter name for Player 2: ");
-            String player2Name = sc.nextLine();
+            String player2Name = s.nextLine();
             // a new player is created
             player2 = new Player(player2Name, 'O');
         }
@@ -82,7 +112,7 @@ public class TicTacToe {
         else if (playingMode == PlayingMode.USER_VS_AI){
             // player name is entered
             System.out.print("\nEnter your name: ");
-            String playerName = sc.nextLine();
+            String playerName = s.nextLine();
             // new player is created
             player1 = new Player(playerName, 'X');
             // new AI player is created
@@ -163,8 +193,11 @@ public class TicTacToe {
     }
     private void handleUserMove(Scanner s){
         int row, column;
+        int number;
+        while(true){
+            try{
         System.out.println(currentPlayer.getName() + ", enter your move (number 1-9): ");
-        int number = s.nextInt();
+        number = s.nextInt();
 
         if(isValidMove(number)){
             int[] rowCol = Move.getRowCol(number);
@@ -173,10 +206,15 @@ public class TicTacToe {
             System.out.println("Invalid move. Try again.");
             handleUserMove(s);
         }
+            }catch(InputMismatchException e){
+                System.out.println("Input is invalid. Enter an integer between 1 and 9\n");
+                s.next();
+            }
+         }
     }
             
         private boolean isValidMove(int number){
-            if((number>= 1)  && (number < 9)){
+            if((number>= 1)  && (number <= 9)){
                 int[] rowCol = Move.getRowCol(number);
                 return board.isCellEmpty(rowCol[0], rowCol[1]);
             }

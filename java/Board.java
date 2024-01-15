@@ -1,8 +1,10 @@
 public class Board {
     private Cell[][] cells;
 
+    // board constructor 
     public Board(){
         cells = new Cell[3][3];
+        // the cells are created
         for(int i = 0; i < 3; i++){
             for(int j = 0; j < 3; j++){
                 cells[i][j] = new Cell();
@@ -10,6 +12,7 @@ public class Board {
         }
     }
 
+    // board display is created
     public void display(){
         int number = 1;
         for(int i = 0; i < 3; i++){
@@ -22,10 +25,12 @@ public class Board {
                     System.out.print(cells[i][j].getSymbol());
                 }
                 number++;
+                // board vertical lines creation
                 if(j < 2){ 
                     System.out.print(" | ");
                 }
             }
+            // board horizontal lines creation
             System.out.println();
             if(i < 2) {
                 System.out.println("-------------");
@@ -34,14 +39,17 @@ public class Board {
         System.out.println();
     }
 
+    // checks if a specific cell is empty
     public boolean isCellEmpty(int row, int column){
         return cells[row][column].getSymbol() == ' ';
     }
 
+    // cell symbol setter
     public void setCellSymbol(int row, int column, char symbol){
         cells[row][column].setSymbol(symbol);
     }
     
+    // symbol getter
     public int getSymbol(int row, int column){
         return cells[row][column].getSymbol();
     }
@@ -77,14 +85,14 @@ private boolean checkDiagonals(char symbol){
 
 }
 
-    public boolean isBoardFull(){
-        for(int i = 0; i < 3; i ++){
-            for(int j = 0; j < 3; j++){
-                if (cells[i][j].getSymbol() == ' '){
-                    return false;
-                }
+public boolean isBoardFull(){
+    for(int i = 0; i < 3; i ++){
+        for(int j = 0; j < 3; j++){
+            if (cells[i][j].getSymbol() == ' '){
+                return false;
             }
         }
-        return true;
     }
+    return true;
+}
 }

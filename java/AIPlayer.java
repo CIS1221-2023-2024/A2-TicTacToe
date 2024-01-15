@@ -10,6 +10,7 @@ public class AIPlayer extends Player{
     }
     private Strategy strategy;
 
+    // constructor for AIPlayer
     public AIPlayer(char symbol, Strategy strategy){
         super("AI", symbol); 
         this.symbol = symbol;
@@ -17,22 +18,28 @@ public class AIPlayer extends Player{
     }
 
     public void makeMove(Board board){
+        // if the trategy is selected to be random, then the AI will use the random strategy of play
         if(this.strategy == strategy.RANDOM){
             randomMove(board);
         }
+        // if the strategy chosen is Miniax
         else if (this.strategy == Strategy.MINIMAX){
+            // then the Ai will determine the best move possible and place its symbol
             Move bestMove = getBestMove(board);
             board.setCellSymbol(bestMove.getRow(), bestMove.getColumn(), this.symbol);
         }
     }
+    // symbol getter
     public char getSymbol(){
         return symbol;
     }
 
+    // strategy getter
     public Strategy getStrategy(){
         return this.strategy;
     }
 
+    // method to get the best move possible
     public Move getBestMove(Board board){
 
         int bestScore = Integer.MIN_VALUE;
@@ -70,6 +77,7 @@ public class AIPlayer extends Player{
             // Columns
             for(int j = 0; j < 3; j ++){
                 if(board.isCellEmpty(i,j)){
+                    // if the cell is empty, then it is added to the list of available moves
                     availableMoves.add(new Move(i,j));  
                 }
             }
@@ -109,7 +117,7 @@ public class AIPlayer extends Player{
                         maxScore = Math.max(maxScore,score);
                         alpha = Math.max(alpha, score);
                         if(beta <= alpha){
-                            break;
+                            return maxScore;
                         }
                     }
                 }
@@ -128,7 +136,7 @@ public class AIPlayer extends Player{
                         minScore = Math.min(minScore, score);
                         beta = Math.min(beta, score);
                         if(beta <= alpha){
-                            break;
+                            return minScore;// pruning
                         }
                     } 
                 }
