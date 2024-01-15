@@ -13,4 +13,10 @@ public class Move {
     public int getColumn(){
         return column;
     }
+
+    public static int[] getRowCol(int number){
+        int row = (number -1)/ 3;
+        int column = (number -1) % 3;
+        return new int[] {row, column};
+    }
 }

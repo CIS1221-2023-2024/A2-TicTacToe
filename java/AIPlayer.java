@@ -138,5 +138,5 @@ public class AIPlayer extends Player{
     }
     private char getOpponentSymbol(){
         return symbol == 'X' ? 'O' : 'X';
-    }
+    } 
 }

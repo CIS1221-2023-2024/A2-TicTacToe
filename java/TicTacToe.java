@@ -153,26 +153,34 @@ public class TicTacToe {
     }
 
     public void makeMove(int row, int column){
-        if(isValidMove(row, column)){
+        if(row >= 0 && row < 3 && column >= 0 && column < 3 && board.isCellEmpty(row, column)){
             board.setCellSymbol(row, column, currentPlayer.getSymbol());
+        }else{
+            System.out.println("Invalid move. Try again");
+            handleUserMove(s);
+
         }
     }
     private void handleUserMove(Scanner s){
         int row, column;
-        System.out.println(currentPlayer.getName() + ", enter your move (row and column, seperated by space): ");
-        row = s.nextInt();
-        column = s.nextInt();
+        System.out.println(currentPlayer.getName() + ", enter your move (number 1-9): ");
+        int number = s.nextInt();
 
-        if(isValidMove(row, column)){
-            makeMove(row, column);
+        if(isValidMove(number)){
+            int[] rowCol = Move.getRowCol(number);
+            makeMove(rowCol[0], rowCol[1]);
         }else{
             System.out.println("Invalid move. Try again.");
             handleUserMove(s);
         }
     }
             
-        private boolean isValidMove(int row, int column){
-            return row>= 0 && row < 3 && column >= 0 && column < 3 && board.isCellEmpty(row,column);
+        private boolean isValidMove(int number){
+            if((number>= 1)  && (number < 9)){
+                int[] rowCol = Move.getRowCol(number);
+                return board.isCellEmpty(rowCol[0], rowCol[1]);
+            }
+            return false;
         }
         private void switchPlayer(){
             if (playingMode == PlayingMode.USER_VS_USER){

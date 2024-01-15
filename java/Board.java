@@ -11,16 +11,24 @@ public class Board {
     }
 
     public void display(){
+        int number = 1;
         for(int i = 0; i < 3; i++){
             for(int j = 0; j < 3; j++){
-                System.out.print(cells[i][j].getSymbol());
-                if(j < 2){
+                if(cells[i][j].getSymbol() == ' '){
+                    // Cell is empty, then show it's corresponding number
+                    System.out.print(number);
+                }else{
+                    // Cell is occupied, print the symbol
+                    System.out.print(cells[i][j].getSymbol());
+                }
+                number++;
+                if(j < 2){ 
                     System.out.print(" | ");
                 }
             }
             System.out.println();
             if(i < 2) {
-                System.out.println("---------");
+                System.out.println("-------------");
             }
         }
         System.out.println();
