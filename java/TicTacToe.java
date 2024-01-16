@@ -6,7 +6,8 @@ public class TicTacToe {
     private Player player1, player2, currentPlayer;
     private Player aiPlayer; 
     private PlayingMode playingMode;
-    private Scanner s = new Scanner(System.in); 
+    private Scanner s = new Scanner(System.in); // for integers
+    private Scanner sc = new Scanner(System.in);// for Strings
 
     public enum PlayingMode{
         // game mode where two players play against each other
@@ -98,13 +99,13 @@ public class TicTacToe {
         if(playingMode == PlayingMode.USER_VS_USER){
             // name for player 1 is entered
             System.out.print("Enter name for Player 1: ");
-            String player1Name = s.nextLine();
+            String player1Name = sc.nextLine();
             // a new player is created
             player1 = new Player(player1Name, 'X');
 
             // name for player 2 is entered
             System.out.print("Enter name for Player 2: ");
-            String player2Name = s.nextLine();
+            String player2Name = sc.nextLine();
             // a new player is created
             player2 = new Player(player2Name, 'O');
         }
@@ -112,7 +113,7 @@ public class TicTacToe {
         else if (playingMode == PlayingMode.USER_VS_AI){
             // player name is entered
             System.out.print("\nEnter your name: ");
-            String playerName = s.nextLine();
+            String playerName = sc.nextLine();
             // new player is created
             player1 = new Player(playerName, 'X');
             // new AI player is created
@@ -147,18 +148,9 @@ public class TicTacToe {
                 if(currentPlayer instanceof AIPlayer){
                     //AI's turn
                     AIPlayer ai = (AIPlayer) currentPlayer;
-                    if(ai.getStrategy() == AIPlayer.Strategy.RANDOM){
-                        // the random move strategy is called
-                        ai.randomMove(board);
-                    }else{
-                        // AI calculates what the best next move is 
-                        Move aiMove = ai.getBestMove(board);
-                    row = aiMove.getRow();
-                    column = aiMove.getColumn();
-                    // the best move is made
-                    makeMove(row, column);
-                    } 
-                }
+                    ai.makeMove(board);
+                } 
+                
                 else{
                     //User's turn
                     handleUserMove(s);
@@ -177,39 +169,39 @@ public class TicTacToe {
                 System.out.println("It's a draw!");
                 return;
             }
-
+            // switch the player for the next turn
             switchPlayer();
         }while(true);
     }
 
     public void makeMove(int row, int column){
-        if(row >= 0 && row < 3 && column >= 0 && column < 3 && board.isCellEmpty(row, column)){
+        if(board.isCellEmpty(row, column)){
             board.setCellSymbol(row, column, currentPlayer.getSymbol());
         }else{
-            System.out.println("Invalid move. Try again");
+            System.out.println("Invalid move, cell is already occupied. Try again");
             handleUserMove(s);
 
         }
     }
     private void handleUserMove(Scanner s){
-        int row, column;
         int number;
-        while(true){
+        boolean validMoveMade = false;
+        while(!validMoveMade){
             try{
-        System.out.println(currentPlayer.getName() + ", enter your move (number 1-9): ");
-        number = s.nextInt();
+            System.out.println(currentPlayer.getName() + ", enter your move (number 1-9): ");
+            number = s.nextInt();
 
-        if(isValidMove(number)){
-            int[] rowCol = Move.getRowCol(number);
-            makeMove(rowCol[0], rowCol[1]);
-        }else{
-            System.out.println("Invalid move. Try again.");
-            handleUserMove(s);
-        }
-            }catch(InputMismatchException e){
-                System.out.println("Input is invalid. Enter an integer between 1 and 9\n");
-                s.next();
+            if(isValidMove(number)){
+                int[] rowCol = Move.getRowCol(number);
+                makeMove(rowCol[0], rowCol[1]);
+                validMoveMade = true;
+            }else{
+                System.out.println("Invalid move. Try again.");
             }
+                }catch(InputMismatchException e){
+                    System.out.println("Input is invalid. Enter an integer between 1 and 9\n");
+                    s.next();
+                }
          }
     }
             

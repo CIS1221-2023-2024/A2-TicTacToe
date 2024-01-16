@@ -24,8 +24,12 @@ public class AIPlayer extends Player{
         }
         // if the strategy chosen is Miniax
         else if (this.strategy == Strategy.MINIMAX){
+            long startTime = System.nanoTime();
             // then the Ai will determine the best move possible and place its symbol
             Move bestMove = getBestMove(board);
+            long endTime = System.nanoTime();
+            long duration = endTime - startTime;
+            System.out.println("AI move calculation time (nanoseconds): " + duration);
             board.setCellSymbol(bestMove.getRow(), bestMove.getColumn(), this.symbol);
         }
     }
