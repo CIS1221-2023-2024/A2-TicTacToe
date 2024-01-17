@@ -2,6 +2,7 @@
 
 import minimax
 import utils
+import time
 
 board = utils.getBoard()
 winner = utils.getWinner()
@@ -13,6 +14,7 @@ gameRunning = True
 player1 = ""
 player2 = ""
 gamemode = 0
+time_list = []
 
 
 
@@ -64,7 +66,7 @@ def placeToken(brd,inp,inpInt):
         if brd[inpInt - 1] == inp:
             brd[(inpInt - 1)] = currentPlayer
             val = False
-        elif gamemode == 1 or currentPlayer == "0":
+        elif gamemode == 1 or currentPlayer == "O":
             #this condition is added in order to not have the message printed everytime the ai generates a random number already taken
                 print("Location already taken!")
     else:
@@ -91,7 +93,12 @@ def playerInp(brd):
             if inpVal == False:
                 print("AI's move:" )
         elif gamemode == 2.2 and currentPlayer == "X": # if it is the ai's turn in hard ai mode
+            start_time = time.time()
             inp = minimax.bestMove(brd)+1
+            end_time = time.time()
+            time_taken = end_time - start_time
+            global time_list
+            time_list.append(time_taken)
             inpStr = str(inp)
             inpVal = placeToken(brd,inpStr,inp)
             if inpVal == False:
@@ -144,5 +151,8 @@ def gamePlay():
         utils.printBoard()
         outWinner(board)
         switchPlayer()
+
+    if gamemode == 2.2:
+        print(f"Time taken in seconds for ai to play at each move: {time_list}")
 
 gamePlay()
