@@ -1,4 +1,4 @@
-#to run either press the run button or in command prompt go to file with scripts (cd python)and enter the command python main.py
+#to run in the terminal go to file with scripts (cd python) and enter the command python main.py
 
 import minimax
 import utils
