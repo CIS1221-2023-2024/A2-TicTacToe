@@ -57,15 +57,19 @@ def bestMove(brd): # determing the best path to be taken by ai
     alpha = float('-inf')
     beta = float('inf')
     if len(empScp) > 0:
-        depth = len(empScp)
+        if len(empScp) == 9: # if first move
+            import random
+            return random.randint(0,8) #returns a random value for the token to be placed
+        else:
+            depth = len(empScp)
 
-        for i in empScp:
+            for i in empScp:
 
-            brd[i] ="X"
-            moveVal = minimax(brd,depth,alpha,beta,False)
-            brd[i] = str(i+1)
+                brd[i] ="X"
+                moveVal = minimax(brd,depth,alpha,beta,False)
+                brd[i] = str(i+1)
 
-            if moveVal > bestScore:
-                bestScore = moveVal
-                bestLoc = i
-        return bestLoc # returning location which will be used for player input
+                if moveVal > bestScore:
+                    bestScore = moveVal
+                    bestLoc = i
+            return bestLoc # returning location which will be used for player input
