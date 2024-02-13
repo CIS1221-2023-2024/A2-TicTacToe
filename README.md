@@ -19,3 +19,5 @@ Email: julia.curmi.23@um.edu.mt
 
 ## Link to Repository
 https://github.com/CIS1221-2023-2024/A2-TicTacToe
+
+[TicTacToe final Challenger report.pdf](https://github.com/CIS1221-2023-2024/A2-TicTacToe/files/14270861/TicTacToe.final.Challenger.report.pdf)
