@@ -11,9 +11,6 @@ For further details regarding the game rules and the implementation of AI algori
 ### Python
 To run in the terminal go to file with scripts (cd python) and enter the command python main.py
 
-## Report
-The report can be found as a pdf version in the repository and for version tracking please follow the [link](https://docs.google.com/document/d/1rGR0t5F5fHsET0BkBVdj8tjegtY1tiEXDEG0xPtlEaI/edit?usp=sharing) and press the icon circled in the image below. ![Alt text](<Screenshot 2024-01-30 at 10.44.16.jpg>)
-
 ## Contributers
 ### Julie Cortis
 Email: julie.cortis.23@um.edu.mt
@@ -22,3 +19,5 @@ Email: julia.curmi.23@um.edu.mt
 
 ## Link to Repository
 https://github.com/CIS1221-2023-2024/A2-TicTacToe
+
+[TicTacToe final Challenger report.pdf](https://github.com/CIS1221-2023-2024/A2-TicTacToe/files/14270861/TicTacToe.final.Challenger.report.pdf)
