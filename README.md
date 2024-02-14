@@ -11,6 +11,9 @@ For further details regarding the game rules and the implementation of AI algori
 ### Python
 To run in the terminal go to file with scripts (cd python) and enter the command python main.py
 
+### Java
+To run the code in Java, simply run the main class named TicTacToe
+
 ## Contributers
 ### Julie Cortis
 Email: julie.cortis.23@um.edu.mt
